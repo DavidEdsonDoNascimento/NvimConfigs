@@ -12,6 +12,7 @@ Plug 'neoclide/coc.nvim' , { 'branch' : 'release' }
 Plug 'honza/vim-snippets'
 Plug 'jiangmiao/auto-pairs'
 Plug 'davidhalter/jedi-vim'
+Plug 'terryma/vim-multiple-cursors'
 
 if (has("nvim"))
     Plug 'nvim-lua/plenary.nvim'
@@ -45,6 +46,8 @@ set splitright       " Create the vertical splits to the right
 set splitbelow       " Create the horizontal splits below
 set autoread         " Update vim after file update from outside
 set mouse=a          " Enable mouse support
+set relativenumber   " enable enables numbering count structure relative
+set inccommand=split " shows in real time words being replaced or regex
 filetype on          " Detect and set the filetype option and trigger the FileType Event
 filetype plugin on   " Load the plugin file for the file type, if any
 filetype indent on   " Load the indent file for the file type, if any
@@ -73,9 +76,20 @@ if (has("nvim")) "Transparent background. Only for nvim
 endif
 
 
-
 " Remaps """"""""""
-" Shortcuts for split navigation
+let mapleader="\<space>"
+"" shortcuts for file navigation
+nnoremap <leader>; A;<esc>
+nnoremap <leader>, A,<esc>
+nnoremap <leader>,m A,<CR>
+
+"" new split vertical with nvim-configs
+nnoremap <leader>ev :vsplit ~/.config/nvim/init.vim<cr>
+
+"" upload changes of nvim-configs
+nnoremap <leader>sv :source ~/.config/nvim/init.vim<cr>
+
+"" Shortcuts for split navigation
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
