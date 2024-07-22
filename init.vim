@@ -53,6 +53,7 @@ set autoread         " Update vim after file update from outside
 set mouse=a          " Enable mouse support
 set relativenumber   " enable enables numbering count structure relative
 set inccommand=split " shows in real time words being replaced or regex
+set autoindent
 filetype on          " Detect and set the filetype option and trigger the FileType Event
 filetype plugin on   " Load the plugin file for the file type, if any
 filetype indent on   " Load the indent file for the file type, if any
@@ -83,6 +84,9 @@ endif
 " Remaps """"""""""
 
 let mapleader="\<space>"
+
+" better ESC
+inoremap <C-k> <Esc>
 
 "" shortcuts for file navigation
 nnoremap <leader>; A;<esc>
@@ -193,7 +197,7 @@ if (has("nvim"))
 endif
 
 " COC """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:coc_global_extensions = [ 'coc-snippets', 'coc-explorer']
+let g:coc_global_extensions = [ 'coc-snippets', 'coc-explorer', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver']
 
 " Use tab for trigger completion with characters ahead and navigate
 " NOTE: There's always complete item selected by default, you may want to enable
