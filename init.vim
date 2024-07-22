@@ -13,6 +13,11 @@ Plug 'honza/vim-snippets'
 Plug 'jiangmiao/auto-pairs'
 Plug 'davidhalter/jedi-vim'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install --frozen-lockfile --production',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'preservim/nerdcommenter'
 
 if (has("nvim"))
     Plug 'nvim-lua/plenary.nvim'
@@ -53,7 +58,6 @@ filetype plugin on   " Load the plugin file for the file type, if any
 filetype indent on   " Load the indent file for the file type, if any
 
 
-
 " Themes """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -77,17 +81,19 @@ endif
 
 
 " Remaps """"""""""
+
 let mapleader="\<space>"
+
 "" shortcuts for file navigation
 nnoremap <leader>; A;<esc>
 nnoremap <leader>, A,<esc>
 nnoremap <leader>,m A,<CR>
 
 "" new split vertical with nvim-configs
-nnoremap <leader>ev :vsplit ~/.config/nvim/init.vim<cr>
+noremap <leader>ev :vsplit ~/.config/nvim/init.vim<cr>
 
 "" upload changes of nvim-configs
-nnoremap <leader>sv :source ~/.config/nvim/init.vim<cr>
+noremap <leader>uc :source ~/.config/nvim/init.vim<cr>
 
 "" Shortcuts for split navigation
 map <C-h> <C-w>h
@@ -115,13 +121,22 @@ nmap th :split<CR>
 nmap tv :vsplit<CR>
 
 " Close splits and others
-nmap tt :q<CR>
+nnoremap <leader><S-w> :q<CR>
+inoremap <leader><S-w> <Esc>:q<CR>
 
+" Save
+noremap <C-s> :w<CR>
+inoremap <C-s> <Esc>:w<CR>
 
 " Call command shortcut
 nmap tc :!
 
 nnoremap tp :!python %<cr>
+
+" Prettier formatter
+au FileType css,scss let b:prettier_exec_cmd = "prettier-stylelint"
+nnoremap <leader>i :Prettier<Esc>:w<CR>
+inoremap <leader>i <Esc>:Prettier<Esc>:w<CR>
 
 " autocmd """"""""""
 function! HighlightWordUnderCursor()
@@ -142,7 +157,7 @@ let g:airline_powerline_fonts = 1
 
 
 " " NerdTree """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap <C-a> :NERDTreeToggle<CR>
+" nmap <C-a> :NERDTreeToggle<CR>
 
 
 " ALE """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -166,6 +181,7 @@ let g:ale_python_isort_options = '--profile black -l 100'
 " Typescript """"""""""""""""""""""""""""""""""""""""""""""
 
 
+
 " Neovim """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if (has("nvim"))
 
@@ -178,22 +194,6 @@ endif
 
 " COC """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:coc_global_extensions = [ 'coc-snippets', 'coc-explorer']
-
-" https://raw.githubusercontent.com/neoclide/coc.nvim/master/doc/coc-example-config.vim
-" May need for Vim (not Neovim) since coc.nvim calculates byte offset by count
-" utf-8 byte sequence
-set encoding=utf-8
-" Some servers have issues with backup files, see #649
-set nobackup
-set nowritebackup
-
-" Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
-" delays and poor user experience
-set updatetime=300
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved
-set signcolumn=yes
 
 " Use tab for trigger completion with characters ahead and navigate
 " NOTE: There's always complete item selected by default, you may want to enable
@@ -251,9 +251,14 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 " Symbol renaming
 nmap <leader>rn <Plug>(coc-rename)
 
+" select all
+nnoremap <C-a> gg<S-v>G
+
 " Formatting selected code
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
+
+
 
 augroup mygroup
   autocmd!
@@ -304,10 +309,10 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
-" Use CTRL-S for selections ranges
+" Use Shift-S for selections ranges
 " Requires 'textDocument/selectionRange' support of language server
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
+nmap <silent> <S-s> <Plug>(coc-range-select)
+xmap <silent> <S-s> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer
 command! -nargs=0 Format :call CocActionAsync('format')
